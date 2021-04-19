@@ -40,8 +40,6 @@ def attention_masks(encoded_sentences):
 
 def inference(doc, model):
     device = torch.device("cpu")
-    # path_to_model = os.path.join(config.MODEL_PATH, 'pytorch_model.bin')
-    # model = torch.load(path_to_model, map_location=torch.device('cpu'))
     doc_df = pd.DataFrame({"sentence": [doc]})
 
     encoded_doc = preprocessing(doc_df)

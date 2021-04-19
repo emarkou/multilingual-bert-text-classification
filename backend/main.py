@@ -1,10 +1,7 @@
-import asyncio
 import time
 import uvicorn
 from fastapi import FastAPI
 import inference
-import os
-import torch
 import config
 from transformers import BertForSequenceClassification
 from pydantic import BaseModel
@@ -14,11 +11,7 @@ class document(BaseModel):
 
 app = FastAPI()
 
-# @app.on_event("startup")
-# async def load_model():
-#     path_to_model = os.path.join(config.MODEL_PATH, 'pytorch_model.bin')
-#     model = torch.load(path_to_model, map_location=torch.device('cpu'))
-
+model = BertForSequenceClassification.from_pretrained(config.MODEL_PATH)
 
 @app.get("/")
 def read_root():
@@ -28,10 +21,6 @@ def read_root():
 @app.post("/predict")
 async def get_doc(doc: document):
     start = time.time()
-    # find way to load at startup
-    # path_to_model = os.path.join(config.MODEL_PATH, 'pytorch_model.bin')
-    model = BertForSequenceClassification.from_pretrained(config.MODEL_PATH)
-    # model = torch.load(path_to_model, map_location=torch.device('cpu'))
     assigned_class = inference.inference(doc.value, model)
     return {"doc": doc, "time": time.time() - start, "assigned_class": assigned_class}
 

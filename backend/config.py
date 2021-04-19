@@ -1,4 +1,8 @@
-MODEL_PATH = "./models/"
+import os
+
+PROJECT_PATH = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(PROJECT_PATH, "/models")
+print(MODEL_PATH)
 
 LABELS = {
     0: "CCAT",
